@@ -116,6 +116,9 @@ create_kafka_topic() {
 
 run() {
   OPERATION=$1
+  echo "===================="
+  echo "    $OPERATION"
+  echo "===================="
   if [ "SETUP" = "$OPERATION" ];
   then
     $GIT clean -fd
@@ -298,6 +301,9 @@ run() {
     run "STOP_KAFKA"
     run "STOP_REDIS"
     run "STOP_ZK"
+  elif [ "SLEEP_SECONDS" = "$OPERATION" ];
+  then
+    sleep $TEST_TIME
   elif [ "FLINK_TEST" = "$OPERATION" ];
   then
     run "START_ZK"
@@ -306,7 +312,7 @@ run() {
     run "START_FLINK"
     run "START_FLINK_PROCESSING"
     run "START_LOAD"
-    sleep $TEST_TIME
+    run "SLEEP_SECONDS"
     run "STOP_LOAD"
     run "STOP_FLINK_PROCESSING"
     run "STOP_FLINK"
@@ -344,12 +350,12 @@ run() {
   elif [ "STOP_ALL" = "$OPERATION" ];
   then
     run "STOP_LOAD"
-    run "STOP_SPARK_PROCESSING"
-    run "STOP_SPARK"
+    # run "STOP_SPARK_PROCESSING"
+    # run "STOP_SPARK"
     run "STOP_FLINK_PROCESSING"
     run "STOP_FLINK"
-    run "STOP_STORM_TOPOLOGY"
-    run "STOP_STORM"
+    # run "STOP_STORM_TOPOLOGY"
+    # run "STOP_STORM"
     run "STOP_KAFKA"
     run "STOP_REDIS"
     run "STOP_ZK"
