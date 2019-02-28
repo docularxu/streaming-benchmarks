@@ -184,7 +184,7 @@ run() {
   then
     start_if_needed redis-server Redis 1 "$REDIS_DIR/src/redis-server"
     cd data
-    $LEIN run -n --configPath ../conf/benchmarkConf.yaml
+    $LEIN run -n --configPath ../$CONF_FILE
     cd ..
   elif [ "STOP_REDIS" = "$OPERATION" ];
   then
