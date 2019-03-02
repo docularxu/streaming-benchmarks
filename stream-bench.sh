@@ -142,13 +142,7 @@ run() {
 	
     $MVN clean install -Dspark.version="$SPARK_VERSION" -Dkafka.version="$KAFKA_VERSION" -Dflink.version="$FLINK_VERSION" -Dstorm.version="$STORM_VERSION" -Dscala.binary.version="$SCALA_BIN_VERSION" -Dscala.version="$SCALA_BIN_VERSION.$SCALA_SUB_VERSION" -Dapex.version="$APEX_VERSION"
 
-    #Fetch and build Redis
-    REDIS_FILE="$REDIS_DIR.tar.gz"
-    fetch_untar_file "$REDIS_FILE" "http://download.redis.io/releases/$REDIS_FILE"
-
-    cd $REDIS_DIR
-    $MAKE
-    cd ..
+    run "SETUP_REDIS"
 
     #Fetch Apex
     APEX_FILE="$APEX_DIR.tgz.gz"
@@ -173,6 +167,15 @@ run() {
     SPARK_FILE="$SPARK_DIR.tgz"
     fetch_untar_file "$SPARK_FILE" "$APACHE_MIRROR/spark/spark-$SPARK_VERSION/$SPARK_FILE"
 
+  elif [ "SETUP_REDIS" = "$OPERATION" ];
+  then
+    #Fetch and build Redis
+    REDIS_FILE="$REDIS_DIR.tar.gz"
+    fetch_untar_file "$REDIS_FILE" "http://download.redis.io/releases/$REDIS_FILE"
+
+    cd $REDIS_DIR
+    $MAKE
+    cd ..
   elif [ "START_ZK" = "$OPERATION" ];
   then
     start_if_needed dev_zookeeper ZooKeeper 10 "$STORM_DIR/bin/storm" dev-zookeeper
