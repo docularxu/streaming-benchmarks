@@ -59,14 +59,16 @@ stop_if_needed() {
   local match="$1"
   local name="$2"
   local PID=`pid_match "$match"`
-  if [[ "$PID" -ne "" ]];
+  # if [[ "$PID" -ne "" ]];
+  if ! [[ -z "$PID" ]];
   then
-    kill "$PID"
+    kill $PID
+    echo "Killed pid(s): $PID with name: $name"
     sleep 1
     local CHECK_AGAIN=`pid_match "$match"`
-    if [[ "$CHECK_AGAIN" -ne "" ]];
+    if ! [[ -z "$CHECK_AGAIN" ]];
     then
-      kill -9 "$CHECK_AGAIN"
+      kill -9 $CHECK_AGAIN
     fi
   else
     echo "No $name instance found to stop"
@@ -106,7 +108,17 @@ run() {
   elif [ "START_LOAD" = "$OPERATION" ];
   then
     cd data
-    start_if_needed leiningen.core.main "Load Generation" 1 $LEIN run -r -t $LOAD --configPath ../$CONF_FILE
+    # instance 1
+    start_if_needed leiningen.core.main "Load Generation" 1 $LEIN run -r -t $LOAD --configPath ../$CONF_FILE > ~/t.t
+    # instance 2
+    $LEIN run -r -t $LOAD --configPath ../$CONF_FILE > ~/t.t2 &
+    sleep 1
+    $LEIN run -r -t $LOAD --configPath ../$CONF_FILE > ~/t.t3 &
+    sleep 1
+    $LEIN run -r -t $LOAD --configPath ../$CONF_FILE > ~/t.t4 &
+    sleep 1
+    $LEIN run -r -t $LOAD --configPath ../$CONF_FILE > ~/t.t5 &
+    sleep 1
     cd ..
 # sleep TEST_TIME
   elif [ "SLEEP_SECONDS" = "$OPERATION" ];
