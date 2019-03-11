@@ -87,7 +87,7 @@ run() {
 # start redis
   elif [ "START_REDIS" = "$OPERATION" ];
   then
-    start_if_needed redis-server Redis 1 "$REDIS_DIR/src/redis-server"
+    start_if_needed redis-server Redis 1 "$REDIS_DIR/src/redis-server" $REDIS_DIR/redis.conf
     cd data
     $LEIN run -n --configPath ../$CONF_FILE
     cd ..
