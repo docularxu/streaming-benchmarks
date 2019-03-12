@@ -87,7 +87,10 @@ run() {
 # start redis
   elif [ "START_REDIS" = "$OPERATION" ];
   then
-    start_if_needed redis-server Redis 1 "$REDIS_DIR/src/redis-server" $REDIS_DIR/redis.conf
+    echo "nothing to do"
+    # start_if_needed redis-server Redis 1 "$REDIS_DIR/src/redis-server" $REDIS_DIR/redis.conf
+  elif [ "START_CAMPAIGNS" = "$OPERATION" ];
+  then
     cd data
     $LEIN run -n --configPath ../$CONF_FILE
     cd ..
@@ -155,8 +158,9 @@ run() {
 # stop redis
   elif [ "STOP_REDIS" = "$OPERATION" ];
   then
-    stop_if_needed redis-server Redis
-    rm -f dump.rdb
+    # stop_if_needed redis-server Redis
+    # rm -f dump.rdb
+    echo "nothing to do"
 # stop zk
   elif [ "STOP_ZK" = "$OPERATION" ];
   then

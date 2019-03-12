@@ -9,7 +9,7 @@ zookeeper.servers:
 
 kafka.port: 9092
 zookeeper.port: 2181
-redis.host: "192.168.10.141"
+redis.host: "192.168.10.177"
 kafka.topic: "ad-events"
 kafka.partitions: 2
 
