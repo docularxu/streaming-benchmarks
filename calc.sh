@@ -1,11 +1,17 @@
+# calculated the real latency, supposing a widnow duration of 10 seconds
+awk '{print ($1 - 10000)}' data/updated.txt > data/latency.txt
+
 # awk '{ sum += $1 } END { print NR,sum/NR}' <  data/seen.txt
 # awk '{ sum += $1 } END { print NR,sum/NR}' <  data/updated.txt
 awk '{sum+=$1}END{printf "Count=%d\nAve=%.1f (seen per campaign per second)\n",NR,sum/NR}' data/seen.txt;  
-awk '{sum+=$1}END{printf "Count=%d\nAve=%.2f (latency in ms)\n",NR,sum/NR}' data/updated.txt;
+awk '{sum+=$1}END{printf "Count=%d\nAve=%.2f (average last-updated)\n",NR,sum/NR}' data/updated.txt;
+awk '{sum+=$1}END{printf "Count=%d\nAve=%.2f (average latency in ms)\n",NR,sum/NR}' data/latency.txt;
 
-echo "Percentile of updated.txt:"
+echo "Percentile of latency:"
 
-SOURCE_FILE=data/updated.txt
+
+
+SOURCE_FILE=data/latency.txt
 
 sort -n $SOURCE_FILE |  awk '{all[NR] = $0} END{print all[int(NR*0.05 - 0.5)], \
  all[int(NR*0.1 - 0.5)], \
