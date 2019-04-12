@@ -13,7 +13,10 @@ echo "Percentile of latency:"
 
 SOURCE_FILE=data/latency.txt
 
-sort -n $SOURCE_FILE |  awk '{all[NR] = $0} END{print all[int(NR*0.05 - 0.5)], \
+sort -n $SOURCE_FILE |  awk '{all[NR] = $0} END{print \
+ all[int(NR*0.01 - 0.5)], \
+ all[int(NR*0.03 - 0.5)], \
+ all[int(NR*0.05 - 0.5)], \
  all[int(NR*0.1 - 0.5)], \
  all[int(NR*0.2 - 0.5)], \
  all[int(NR*0.3 - 0.5)], \
@@ -23,5 +26,7 @@ sort -n $SOURCE_FILE |  awk '{all[NR] = $0} END{print all[int(NR*0.05 - 0.5)], \
  all[int(NR*0.7 - 0.5)], \
  all[int(NR*0.8 - 0.5)], \
  all[int(NR*0.9 - 0.5)], \
- all[int(NR*0.95 - 0.5)]}'
+ all[int(NR*0.95 - 0.5)], \
+ all[int(NR*0.97 - 0.5)], \
+ all[int(NR*0.99 - 0.5)]}'
 
