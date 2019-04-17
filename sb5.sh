@@ -204,7 +204,7 @@ run() {
 # start flink processing
   elif [ "START_FLINK_PROCESSING" = "$OPERATION" ];
   then
-    "$FLINK_DIR/bin/flink" run ./flink-benchmarks/target/flink-benchmarks-0.1.0.jar --confPath $CONF_FILE &
+    "/usr/bin/flink" run ./flink-benchmarks/target/flink-benchmarks-0.1.0.jar --confPath $CONF_FILE &
     sleep 3
 # start load
   elif [ "START_LOAD" = "$OPERATION" ];
