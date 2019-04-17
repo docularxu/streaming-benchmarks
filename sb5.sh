@@ -87,14 +87,28 @@ pid_match() {
    echo $VAL
 }
 
+delete_kafka_topic () {
+  echo "Deleting $TOPIC ..."
+  $KAFKA_DIR/bin/kafka-topics.sh  --zookeeper "$ZK_CONNECTIONS" --delete --topic $TOPIC
+  $KAFKA_DIR/bin/zookeeper-shell.sh $ZK_HOST rmr /brokers/topics/$TOPIC
+  $KAFKA_DIR/bin/zookeeper-shell.sh $ZK_HOST rmr /config/topics/$TOPIC
+  $KAFKA_DIR/bin/zookeeper-shell.sh $ZK_HOST rmr /admin/delete_topics/$TOPIC
+}
+
 create_kafka_topic() {
     local count=`$KAFKA_DIR/bin/kafka-topics.sh --describe --zookeeper "$ZK_CONNECTIONS" --topic $TOPIC 2>/dev/null | grep -c $TOPIC`
+    echo "enter  create_kafka_topic"
     if [[ "$count" = "0" ]];
     then
-        $KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper "$ZK_CONNECTIONS" --replication-factor 1 --partitions $PARTITIONS --topic $TOPIC
+        echo "Kafka topic $TOPIC doesn't exist. Create it."
     else
         echo "Kafka topic $TOPIC already exists"
+        echo "delete $TOPIC first, then create it"
+        delete_kafka_topic
     fi
+    echo "calling kafka-topics.sh --create"
+    $KAFKA_DIR/bin/kafka-topics.sh --create --zookeeper "$ZK_CONNECTIONS" --replication-factor 1 --partitions $PARTITIONS --topic $TOPIC
+    echo "calling kafka-topics.sh --describe"
     $KAFKA_DIR/bin/kafka-topics.sh --describe --zookeeper "$ZK_CONNECTIONS" --topic $TOPIC
 }
 
@@ -134,14 +148,6 @@ stop_if_needed() {
   else
     echo "No $name instance found to stop"
   fi
-}
-
-delete_kafka_topic () {
-  echo "Deleting $TOPIC ..."
-  $KAFKA_DIR/bin/kafka-topics.sh  --zookeeper "$ZK_CONNECTIONS" --delete --topic $TOPIC
-  $KAFKA_DIR/bin/zookeeper-shell.sh $ZK_HOST rmr /brokers/topics/$TOPIC
-  $KAFKA_DIR/bin/zookeeper-shell.sh $ZK_HOST rmr /config/topics/$TOPIC
-  $KAFKA_DIR/bin/zookeeper-shell.sh $ZK_HOST rmr /admin/delete_topics/$TOPIC
 }
 
 run() {
@@ -190,7 +196,6 @@ run() {
 # start kafka
   elif [ "START_KAFKA" = "$OPERATION" ];
   then
-    delete_kafka_topic
     create_kafka_topic
 # start flink
   elif [ "START_FLINK" = "$OPERATION" ];
