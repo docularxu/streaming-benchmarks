@@ -350,12 +350,12 @@ run() {
   elif [ "STOP_ALL" = "$OPERATION" ];
   then
     run "STOP_LOAD"
-    run "STOP_SPARK_PROCESSING"
-    run "STOP_SPARK"
+    # run "STOP_SPARK_PROCESSING"
+    # run "STOP_SPARK"
     run "STOP_FLINK_PROCESSING"
     run "STOP_FLINK"
-    run "STOP_STORM_TOPOLOGY"
-    run "STOP_STORM"
+    # run "STOP_STORM_TOPOLOGY"
+    # run "STOP_STORM"
     run "STOP_KAFKA"
     run "STOP_REDIS"
     run "STOP_ZK"
