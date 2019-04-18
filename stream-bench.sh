@@ -116,6 +116,9 @@ create_kafka_topic() {
 
 run() {
   OPERATION=$1
+  echo "===================="
+  echo "    $OPERATION"
+  echo "===================="
   if [ "SETUP" = "$OPERATION" ];
   then
     $GIT clean -fd
@@ -132,7 +135,7 @@ run() {
 	echo 'kafka.topic: "'$TOPIC'"' >> $CONF_FILE
 	echo 'kafka.partitions: '$PARTITIONS >> $CONF_FILE
 	echo 'process.hosts: 1' >> $CONF_FILE
-	echo 'process.cores: 4' >> $CONF_FILE
+	echo 'process.cores: 16' >> $CONF_FILE
 	echo 'storm.workers: 1' >> $CONF_FILE
 	echo 'storm.ackers: 2' >> $CONF_FILE
 	echo 'spark.batchtime: 2000' >> $CONF_FILE
@@ -181,7 +184,7 @@ run() {
   then
     start_if_needed redis-server Redis 1 "$REDIS_DIR/src/redis-server"
     cd data
-    $LEIN run -n --configPath ../conf/benchmarkConf.yaml
+    $LEIN run -n --configPath ../$CONF_FILE
     cd ..
   elif [ "STOP_REDIS" = "$OPERATION" ];
   then
@@ -298,6 +301,9 @@ run() {
     run "STOP_KAFKA"
     run "STOP_REDIS"
     run "STOP_ZK"
+  elif [ "SLEEP_SECONDS" = "$OPERATION" ];
+  then
+    sleep $TEST_TIME
   elif [ "FLINK_TEST" = "$OPERATION" ];
   then
     run "START_ZK"
@@ -306,7 +312,7 @@ run() {
     run "START_FLINK"
     run "START_FLINK_PROCESSING"
     run "START_LOAD"
-    sleep $TEST_TIME
+    run "SLEEP_SECONDS"
     run "STOP_LOAD"
     run "STOP_FLINK_PROCESSING"
     run "STOP_FLINK"
