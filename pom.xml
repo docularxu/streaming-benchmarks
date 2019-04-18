@@ -16,8 +16,8 @@ Licensed under the terms of the Apache License 2.0. Please see LICENSE file in t
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spark.version>2.3.1</spark.version>
-        <kafka.version>0.8.2.1</kafka.version>
-        <flink.version>1.6.0</flink.version>
+        <kafka.version>0.10.2.2</kafka.version>
+        <flink.version>1.6.4</flink.version>
         <storm.version>1.2.2</storm.version>
         <scala.binary.version>2.11</scala.binary.version>
         <scala.version>2.11.12</scala.version>
@@ -64,7 +64,7 @@ Licensed under the terms of the Apache License 2.0. Please see LICENSE file in t
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
-                <artifactId>flink-connector-kafka-0.8_${scala.binary.version}</artifactId>
+                <artifactId>flink-connector-kafka-0.10_${scala.binary.version}</artifactId>
                 <version>${flink.version}</version>
             </dependency>
             <dependency>
@@ -109,7 +109,7 @@ Licensed under the terms of the Apache License 2.0. Please see LICENSE file in t
             </dependency>
             <dependency>
                 <groupId>org.apache.spark</groupId>
-                <artifactId>spark-streaming-kafka-0-8_${scala.binary.version}</artifactId>
+                <artifactId>spark-streaming-kafka-0-10_${scala.binary.version}</artifactId>
                 <version>${spark.version}</version>
             </dependency>
             <dependency>
